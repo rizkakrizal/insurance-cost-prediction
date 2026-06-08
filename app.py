@@ -24,21 +24,49 @@ st.markdown(
     "Masukkan nilai fitur lalu klik tombol Prediksi."
 )
 
-input_user = {}
+st.subheader("Input Data")
 
-for f in FITUR:
-    input_user[f] = st.number_input(
-        label=f,
-        value=0.0,
-        step=0.1
-    )
+age = st.number_input("Usia", 18, 100, 25)
+
+bmi = st.number_input("BMI", 10.0, 60.0, 25.0)
+
+children = st.number_input("Jumlah Anak", 0, 10, 0)
+
+sex = st.selectbox(
+    "Jenis Kelamin",
+    ["Female", "Male"]
+)
+
+smoker = st.selectbox(
+    "Perokok",
+    ["Tidak", "Ya"]
+)
+
+region = st.selectbox(
+    "Wilayah",
+    ["northeast", "northwest", "southeast", "southwest"]
+)
 
 if st.button("Prediksi"):
 
-    nilai = pd.DataFrame(
-        [[input_user[f] for f in FITUR]],
-        columns=FITUR
-    )
+    sex_male = 1 if sex == "Male" else 0
+    smoker_yes = 1 if smoker == "Ya" else 0
+
+    region_northwest = 1 if region == "northwest" else 0
+    region_southeast = 1 if region == "southeast" else 0
+    region_southwest = 1 if region == "southwest" else 0
+
+    nilai = pd.DataFrame([{
+        "age": age,
+        "bmi": bmi,
+        "children": children,
+        "sex_male": sex_male,
+        "smoker_yes": smoker_yes,
+        "region_northwest": region_northwest,
+        "region_southeast": region_southeast,
+        "region_southwest": region_southwest
+    }])
+
 
     nilai_sc = scaler.transform(nilai)
 
@@ -66,3 +94,4 @@ st.divider()
 st.caption(
     "Deploy Tugas 8 - Regresi Linear Berganda"
 )
+
